@@ -30,7 +30,7 @@ const users = {
       modifyUsersById (req, res) {
             const idUser = req.params.id;
             const { first_name, last_name, email, password } = req.body;
-            console.log(first_name);
+            
             if (!first_name) return res.sendStatus(400);
             if (!last_name) return res.sendStatus(400);
             if (!email) return res.sendStatus(400);
