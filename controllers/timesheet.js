@@ -6,7 +6,14 @@ const displayTimesheetPage = (req, res, next) => {
 };
 
 const displayAllTimesheet = (req, res) => {
-  res.send(timesRawData);
+  Time.find()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 };
 
 const postNewTimesheet = (req, res) => {
