@@ -8,8 +8,8 @@ const users = require("../controllers/Users");
 router.get('/', users.getUsers);
 
 router.get("/id/:id", users.getUserById);
-router.delete("/id/:id", users.deleteUserById);
 router.post('/id/:id', users.modifyUsersById);
+router.delete("/id/:id", users.deleteUserById);
 
 router.get("/name/:lastname", users.getUserByLastname);
 
