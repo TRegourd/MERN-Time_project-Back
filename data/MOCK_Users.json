@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "first_name": "Jacquetta",
+    "last_name": "Edgley",
+    "email": "jedgley0@guardian.co.uk",
+    "password": "Ja0KZoSiHSEf"
+  },
+  {
+    "id": 2,
+    "first_name": "Martguerita",
+    "last_name": "Nolan",
+    "email": "mnolan1@themeforest.net",
+    "password": "5tE5B02IQLmM"
+  },
+  {
+    "id": 3,
+    "first_name": "Rochell",
+    "last_name": "Doding",
+    "email": "rdoding2@europa.eu",
+    "password": "6nOGUuj2UBW"
+  },
+  {
+    "id": 4,
+    "first_name": "Merwyn",
+    "last_name": "Arrington",
+    "email": "marrington3@youtube.com",
+    "password": "dQHYdc3rBZX"
+  },
+  {
+    "id": 5,
+    "first_name": "Gretna",
+    "last_name": "Poupard",
+    "email": "gpoupard4@epa.gov",
+    "password": "tAR3rpJdeDGj"
+  },
+  {
+    "id": 6,
+    "first_name": "Evita",
+    "last_name": "Spurling",
+    "email": "espurling5@twitter.com",
+    "password": "SQFkks8aZ6sh"
+  },
+  {
+    "id": 7,
+    "first_name": "Tedi",
+    "last_name": "Chetwind",
+    "email": "tchetwind6@tripod.com",
+    "password": "O6m9u95Fj"
+  },
+  {
+    "id": 8,
+    "first_name": "Agnella",
+    "last_name": "Scroggs",
+    "email": "ascroggs7@shutterfly.com",
+    "password": "N0rR48"
+  },
+  {
+    "id": 9,
+    "first_name": "Tonya",
+    "last_name": "Bollom",
+    "email": "tbollom8@yellowbook.com",
+    "password": "WBDL4j"
+  },
+  {
+    "id": 10,
+    "first_name": "Emmey",
+    "last_name": "Senter",
+    "email": "esenter9@upenn.edu",
+    "password": "UrqQVmA"
+  }
+]

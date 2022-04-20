@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Musculoskeletal op NEC", "color": "green" },
+  { "id": 2, "name": "Lap ing hern-graft NOS", "color": "red" },
+  { "id": 3, "name": "Limb length measurement", "color": "yellow" },
+  { "id": 4, "name": "Stapedectomy NEC", "color": "pink" },
+  { "id": 5, "name": "Heart vessel op NEC", "color": "orange" }
+]
