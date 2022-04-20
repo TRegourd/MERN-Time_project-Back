@@ -1,6 +1,10 @@
 const timesRawData = require("../data/times.json");
 const Time = require("../models/Times");
 const mongoose = require("mongoose");
+const { findTimesheetByUserID } = require("../libs/findTimesheetByUserID");
+const {
+  findTimesheetByProjectID,
+} = require("../libs/findTimesheetByProjectID");
 
 const displayTimesheetPage = (req, res, next) => {
   res.send("timesheet home");
@@ -39,26 +43,11 @@ const postNewTimesheet = (req, res) => {
 };
 
 const displayTimesheetByProjectId = (req, res) => {
-  Time.find({ projectId: req.params.id })
-    .then((result) => {
-      console.log(result);
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(404);
-    });
+  findTimesheetByProjectID(req, res);
 };
 
 const displayTimesheetByUserId = (req, res) => {
-  Time.find({ userId: { _id: req.params.id } })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(404);
-    });
+  findTimesheetByUserID(req, res);
 };
 
 const Timesheets = {
