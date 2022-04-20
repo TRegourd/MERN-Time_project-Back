@@ -11,9 +11,6 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var timesRouter = require("./routes/timesheet");
 
-const mongoose = require("mongoose");
-require("./dbConnect");
-
 var app = express();
 
 app.use(logger("dev"));
@@ -26,8 +23,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/timesheet", timesRouter);
 
-
 app.use(express.static(path.join(__dirname, "public")));
-
 
 module.exports = app;

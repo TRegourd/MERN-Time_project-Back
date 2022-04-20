@@ -1,5 +1,5 @@
 var express = require("express");
-const Timesheets = require("../controllers/timesheet");
+const Timesheets = require("../controllers/Timesheet");
 var router = express.Router();
 
 /* GET timesheet homepage */
