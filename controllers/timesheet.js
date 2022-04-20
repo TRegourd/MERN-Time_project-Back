@@ -39,7 +39,7 @@ const postNewTimesheet = (req, res) => {
 };
 
 const displayTimesheetByProjectId = (req, res) => {
-  Time.find({ projectId: { _id: req.params.id } })
+  Time.find({ projectId: req.params.id })
     .then((result) => {
       console.log(result);
       res.send(result);

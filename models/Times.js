@@ -18,10 +18,12 @@ const TimeSchema = new mongoose.Schema(
       type: Date,
     },
     projectId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "Project",
     },
     userId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }
