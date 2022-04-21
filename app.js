@@ -3,6 +3,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
+require("dotenv").config();
 
 const mongoose = require("mongoose");
 require("./dbConnect");
