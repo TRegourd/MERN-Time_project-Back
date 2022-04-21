@@ -20,12 +20,17 @@ const projects = {
       },
       
       modifyProjectsById (req, res) {
+
             const idProject = req.params.id;
-            const { name, color } = req.body;
-
+            const { name, r, g, b, a } = req.body;
+            
             if (!name) return res.sendStatus(400);
-            if (!color) return res.sendStatus(400);
+            if (!r) return res.sendStatus(400);
+            if (!g) return res.sendStatus(400);
+            if (!b) return res.sendStatus(400);
 
+            const color =  { r, g, b, a };
+            console.log(color);
             ProjectModel.findByIdAndUpdate(idProject, { name, color })
                   .then(() => {
                         res.send(200);
