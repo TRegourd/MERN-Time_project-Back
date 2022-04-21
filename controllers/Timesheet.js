@@ -12,6 +12,7 @@ const displayTimesheetPage = (req, res, next) => {
 
 const displayAllTimesheet = (req, res) => {
   Time.find()
+    .populate(["user", "project"])
     .then((result) => {
       res.send(result);
     })
@@ -22,15 +23,15 @@ const displayAllTimesheet = (req, res) => {
 };
 
 const postNewTimesheet = (req, res) => {
-  const { desc, date, duration, projectId, userId } = req.body;
+  const { desc, date, duration, project, user } = req.body;
 
   // crée un objet selon le modèle mongoose Message
   const newTimesheet = new Time({
     desc,
     date,
     duration,
-    projectId,
-    userId,
+    project,
+    user,
   });
 
   // envoie l'objet newMessage dans la db

@@ -17,11 +17,11 @@ const TimeSchema = new mongoose.Schema(
     end: {
       type: Date,
     },
-    projectId: {
+    project: {
       type: mongoose.Types.ObjectId,
       ref: "Project",
     },
-    userId: {
+    user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
