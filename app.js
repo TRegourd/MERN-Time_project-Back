@@ -5,7 +5,6 @@ var logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const mongoose = require("mongoose");
 require("./dbConnect");
 
 var indexRouter = require("./routes/index");

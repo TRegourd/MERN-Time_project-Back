@@ -50,12 +50,22 @@ const displayTimesheetByUserId = (req, res) => {
   findTimesheetByUserID(req, res);
 };
 
+const deleteTimesheetById = (req, res) => {
+  Time.findByIdAndRemove(req.params.id)
+    .then(() => res.send("Timesheet deleted"))
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+};
+
 const Timesheets = {
   displayTimesheetPage,
   displayAllTimesheet,
   postNewTimesheet,
   displayTimesheetByProjectId,
   displayTimesheetByUserId,
+  deleteTimesheetById,
 };
 
 module.exports = Timesheets;
