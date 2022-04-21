@@ -12,6 +12,7 @@ const displayTimesheetPage = (req, res, next) => {
 
 const displayAllTimesheet = (req, res) => {
   Time.find()
+    .populate(["userId", "projectId"])
     .then((result) => {
       res.send(result);
     })
