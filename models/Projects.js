@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const ProjetSchema = new mongoose.Schema({
   name: String,
   color: {
-    R: String,
-    G: String,
-    B: String,
-    A: {type:String, default:"1"}
+    r: String,
+    g: String,
+    b: String,
+    a: {type:String, default:"1"}
   },
 });
 
