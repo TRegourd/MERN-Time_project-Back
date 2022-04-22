@@ -8,7 +8,7 @@ const users = {
     });
   },
 
-  createdUsers(req, res) {
+  createUser(req, res) {
     const { first_name, last_name, email, password } = req.body;
 
     if (!first_name) return res.sendStatus(400);
