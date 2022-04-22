@@ -1,7 +1,7 @@
 const Time = require("../models/Times");
 
 function findTimesheetByUserID(req, res) {
-  Time.find({ userId: req.params.id })
+  Time.find({ user: req.params.id })
     .then((result) => {
       res.send(result);
     })
