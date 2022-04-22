@@ -61,6 +61,25 @@ const projects = {
       });
   },
 
+  modifyColorProjectsById(req, res) {
+    const idProject = req.params.id;
+    const { r, g, b, a } = req.body;
+
+    if (!r) return res.sendStatus(400);
+    if (!g) return res.sendStatus(400);
+    if (!b) return res.sendStatus(400);
+
+    const color = { r, g, b, a };
+
+    ProjectModel.findByIdAndUpdate(idProject, { color })
+      .then(() => {
+        res.send(200);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  },
+
   deleteProjectById(req, res) {
     ProjectModel.findByIdAndDelete(req.params.id)
       .then(() => {
