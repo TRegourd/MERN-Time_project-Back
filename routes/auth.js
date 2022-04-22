@@ -2,7 +2,10 @@ var express = require("express");
 const Auth = require("../controllers/auth");
 var router = express.Router();
 
-/* GET users listing. */
+/* Login */
 router.post("/login", Auth.login);
+
+/* Signin */
+router.post("/signin", Auth.signin);
 
 module.exports = router;

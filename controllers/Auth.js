@@ -22,6 +22,20 @@ async function login(req, res) {
   }
 }
 
-const Auth = { login };
+async function signin(req, res) {
+  const newUser = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  await UserModel.create(newUser);
+
+  console.log(req.body);
+  res.sendStatus(204);
+}
+
+const Auth = { login, signin };
 
 module.exports = Auth;

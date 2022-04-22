@@ -1,7 +1,7 @@
 const Time = require("../models/Times");
 
 function findTimesheetByProjectID(req, res) {
-  Time.find({ projectId: req.params.id })
+  Time.find({ project: req.params.id })
     .then((result) => {
       res.send(result);
     })
