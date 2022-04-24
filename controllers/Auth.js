@@ -1,4 +1,6 @@
 const UserModel = require("../models/Users");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 async function login(req, res) {
   const { email, password } = req.body;
@@ -13,9 +15,9 @@ async function login(req, res) {
     return res.send("Vous n'existez pas");
   }
 
-  //const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password);
 
-  if (user.password === req.body.password) res.send("Vous êtes connecté.");
+  if (isMatch) res.send("Vous êtes connecté.");
   else {
     res.status(400);
     res.send("Mot de passe incorrect");
@@ -23,17 +25,34 @@ async function login(req, res) {
 }
 
 async function signin(req, res) {
-  const newUser = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    password: req.body.password,
-  };
+  if (
+    !req.body.first_name ||
+    !req.body.last_name ||
+    !req.body.email ||
+    !req.body.password
+  ) {
+    res.status(400).send("Incorrect input");
+  } else {
+    const isExistingUser = await UserModel.findOne({ email: req.body.email });
 
-  await UserModel.create(newUser);
-
-  console.log(req.body);
-  res.sendStatus(204);
+    if (isExistingUser === null) {
+      try {
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+        const newUser = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: hashedPassword,
+        };
+        await UserModel.create(newUser);
+        res.status(204).send("User created");
+      } catch (err) {
+        res.status(400).send(err);
+      }
+    } else {
+      res.status(500).send("User already exists");
+    }
+  }
 }
 
 const Auth = { login, signin };
