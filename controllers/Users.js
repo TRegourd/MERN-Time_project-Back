@@ -3,7 +3,7 @@ const UserModel = require("../models/Users");
 const users = {
   // Liste de tous les utilisateurs
   getUsers(req, res) {
-    UserModel.find().then((usersList) => {
+    UserModel.findById(req.user._id).then((usersList) => {
       res.send(usersList);
     });
   },

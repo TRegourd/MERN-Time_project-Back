@@ -16,7 +16,7 @@ router.get("/project/:id", Timesheets.displayTimesheetByProjectId);
 router.get("/user/:id", Timesheets.displayTimesheetByUserId);
 
 /* POST new timesheet */
-router.post("/newtimesheet", Timesheets.postNewTimesheet);
+router.post("/newtimesheet", checkAuth, Timesheets.postNewTimesheet);
 
 /* DELETE new timesheet */
 router.delete("/delete/:id", Timesheets.deleteTimesheetById);
