@@ -7,7 +7,6 @@ async function login(req, res) {
 
   if (!email || !password) return res.sendStatus(400);
 
-  // vérifier si email et password correspondent
   const user = await UserModel.findOne({ email });
 
   if (user === null) {
