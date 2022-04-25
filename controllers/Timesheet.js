@@ -9,7 +9,7 @@ const displayTimesheetPage = (req, res, next) => {
 };
 
 const displayAllTimesheet = (req, res) => {
-  Time.find()
+  Time.find({ user: req.user })
     .populate(["user", "project"])
     .then((result) => {
       res.send(result);
