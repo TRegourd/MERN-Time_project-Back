@@ -1,5 +1,6 @@
 const UserModel = require("../models/Users");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 async function login(req, res) {
@@ -16,7 +17,9 @@ async function login(req, res) {
 
   const isMatch = await bcrypt.compare(password, user.password);
 
-  if (isMatch) res.send("Vous êtes connecté.");
+  const token = jwt.sign({ id: user._id }, process.env.SECRET);
+
+  if (isMatch) res.send({ jwt: token });
   else {
     res.status(400);
     res.send("Mot de passe incorrect");
