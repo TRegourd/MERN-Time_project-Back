@@ -45,6 +45,56 @@ const displayTimesheetByProjectId = (req, res) => {
   findTimesheetByProjectID(req, res);
 };
 
+const getTotalProjectTime = (req, res) => {
+  Time.find({ user: req.user, project: req.params.id })
+    .then((result) => {
+      let totalTime = 0;
+      result.map((item) => (totalTime += item.duration));
+
+      console.log(totalTime);
+
+      res.send({ result, totalTime });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(404);
+    });
+};
+
+function sortProject(projects, currentTime, arr) {
+  const projectName = currentTime.project.name;
+  let projectExists = projectName in projects;
+  if (projectExists) {
+    projects[projectName].totalTime += currentTime.duration;
+  } else {
+    projects[projectName] = { totalTime: currentTime.duration };
+  }
+  return projects;
+}
+
+function arrayYFy(obj) {
+  return Object.entries(obj).map((item) => {
+    const [name, { totalTime }] = item;
+    return { name, totalTime };
+  });
+}
+
+function treatData(times) {
+  return arrayYFy(times.reduce(sortProject, {}));
+}
+
+const getProjectListCurrentUser = (req, res) => {
+  Time.find({ user: req.user })
+    .populate("project")
+    .then((result) => {
+      res.send(treatData(result));
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(404);
+    });
+};
+
 const displayTimesheetByUserId = (req, res) => {
   findTimesheetByUserID(req, res);
 };
@@ -65,6 +115,8 @@ const Timesheets = {
   displayTimesheetByProjectId,
   displayTimesheetByUserId,
   deleteTimesheetById,
+  getTotalProjectTime,
+  getProjectListCurrentUser,
 };
 
 module.exports = Timesheets;

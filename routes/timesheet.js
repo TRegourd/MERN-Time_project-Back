@@ -8,9 +8,16 @@ router.get("/", Timesheets.displayTimesheetPage);
 
 /* GET timesheet list */
 router.get("/all", checkAuth, Timesheets.displayAllTimesheet);
-
+/* GET project list for current User */
+router.get("/project/graph", checkAuth, Timesheets.getProjectListCurrentUser);
 /* GET timesheet list by project ID */
 router.get("/project/:id", Timesheets.displayTimesheetByProjectId);
+
+/* GET total time by project ID */
+router.get("/project/total/:id", checkAuth, Timesheets.getTotalProjectTime);
+
+/* GET project list for current User */
+router.get("/project/graph", checkAuth, Timesheets.getProjectListCurrentUser);
 
 /* GET timesheet list by user ID */
 router.get("/user/:id", Timesheets.displayTimesheetByUserId);
