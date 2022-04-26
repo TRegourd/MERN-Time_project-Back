@@ -4,8 +4,9 @@ var router = express.Router();
 const users = require("../controllers/Users");
 const checkAuth = require("../middlewares/checkAuth");
 
-/* GET users listing. */
 router.get("/", checkAuth, users.getUsers);
+
+router.put("/", checkAuth, users.modifyCurrentUser);
 
 router.post("/", users.createUser);
 router.get("/id/:id", users.getUserById);

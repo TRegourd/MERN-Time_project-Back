@@ -31,7 +31,8 @@ async function signin(req, res) {
     !req.body.first_name ||
     !req.body.last_name ||
     !req.body.email ||
-    !req.body.password
+    !req.body.password ||
+    !req.body.confirmPassword
   ) {
     res.status(400).send("Incorrect input");
   } else {
@@ -45,6 +46,8 @@ async function signin(req, res) {
           last_name: req.body.last_name,
           email: req.body.email,
           password: hashedPassword,
+          position: "",
+          adress: "",
         };
         await UserModel.create(newUser);
         res.status(204).send("User created");
