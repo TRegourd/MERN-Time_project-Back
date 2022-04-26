@@ -72,15 +72,8 @@ const users = {
   },
 
   modifyCurrentUser(req, res) {
-    if (!req.user.first_name) return res.sendStatus(400);
-    if (!req.user.last_name) return res.sendStatus(400);
-
     const { first_name, last_name, adress, position } = req.user;
     const updatedUser = req.body;
-
-    // if (position != req.body.position)
-
-    console.log(first_name, last_name, adress, position, req.body.position);
 
     UserModel.findByIdAndUpdate(req.user._id, updatedUser)
       .then(() => {
