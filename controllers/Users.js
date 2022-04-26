@@ -1,7 +1,7 @@
 const UserModel = require("../models/Users");
 
 const users = {
-  // Liste de tous les utilisateurs
+  // Utilisateur Courtant
   getUsers(req, res) {
     UserModel.findById(req.user._id).then((usersList) => {
       res.send(usersList);
@@ -9,19 +9,19 @@ const users = {
   },
 
   createUser(req, res) {
-    const { first_name, last_name, email, password } = req.body;
+    const userForm = req.body;
 
-    if (!first_name) return res.sendStatus(400);
-    if (!last_name) return res.sendStatus(400);
-    if (!email) return res.sendStatus(400);
-    if (!password) return res.sendStatus(400);
+    if (!userForm.first_name) return res.sendStatus(400);
+    if (!userForm.last_name) return res.sendStatus(400);
+    if (!userForm.email) return res.sendStatus(400);
+    if (!userForm.password) return res.sendStatus(400);
 
     // On vérifie que l'adresse mail n'existe pas déjà dans la bdd
-    UserModel.find({ email })
+    UserModel.find({ email: userForm.email })
       .then((result) => {
         if (result.length !== 0) return res.sendStatus(409);
         else {
-          UserModel.create({ first_name, last_name, email, password })
+          UserModel.create(userForm)
             .then(() => {
               res.sendStatus(201);
             })
@@ -64,6 +64,27 @@ const users = {
       password,
     })
       .then(() => {
+        res.send(200);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  },
+
+  modifyCurrentUser(req, res) {
+    if (!req.user.first_name) return res.sendStatus(400);
+    if (!req.user.last_name) return res.sendStatus(400);
+
+    const { first_name, last_name, adress, position } = req.user;
+    const updatedUser = req.body;
+
+    // if (position != req.body.position)
+
+    console.log(first_name, last_name, adress, position, req.body.position);
+
+    UserModel.findByIdAndUpdate(req.user._id, updatedUser)
+      .then(() => {
+        console.log("user updated");
         res.send(200);
       })
       .catch(() => {
