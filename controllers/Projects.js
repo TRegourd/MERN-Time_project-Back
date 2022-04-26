@@ -61,6 +61,18 @@ const projects = {
       });
   },
 
+  modifyNameProjectsById(req, res) {
+    const idProject = req.params.id;
+    const { name } = req.body;
+    ProjectModel.findByIdAndUpdate(idProject, { name })
+      .then(() => {
+        res.send(200);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  },
+
   modifyColorProjectsById(req, res) {
     const idProject = req.params.id;
     const { r, g, b, a } = req.body;
