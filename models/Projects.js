@@ -6,7 +6,11 @@ const ProjetSchema = new mongoose.Schema({
     r: String,
     g: String,
     b: String,
-    a: {type:String, default:"1"}
+    a: { type: String, default: "1" },
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
   },
 });
 
