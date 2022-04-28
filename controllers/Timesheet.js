@@ -36,7 +36,6 @@ const postNewTimesheet = (req, res) => {
   Time.create(newTimesheet)
     .then((result) => {
       res.send(`TimeSheet Created`);
-      console.log("TimeSheet Created");
     })
     .catch((error) => console.log(error));
 };
@@ -50,8 +49,6 @@ const getTotalProjectTime = (req, res) => {
     .then((result) => {
       let totalTime = 0;
       result.map((item) => (totalTime += item.duration));
-
-      console.log(totalTime);
 
       res.send({ result, totalTime });
     })

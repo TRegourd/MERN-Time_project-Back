@@ -77,7 +77,6 @@ const users = {
 
     UserModel.findByIdAndUpdate(req.user._id, updatedUser)
       .then(() => {
-        console.log("user updated");
         res.send(200);
       })
       .catch(() => {
