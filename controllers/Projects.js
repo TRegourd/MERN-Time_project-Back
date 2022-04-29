@@ -3,13 +3,15 @@ const ProjectModel = require("../models/Projects");
 const projects = {
   // Liste de tous les utilisateurs
   getProjects(req, res) {
-    ProjectModel.find().then((projectList) => {
-      res.send(projectList);
-    });
+    ProjectModel.find({ user: req.user })
+      .populate(["user"])
+      .then((projectList) => {
+        res.send(projectList);
+      });
   },
 
   createProject(req, res) {
-    const { name, r, g, b, a } = req.body;
+    const { name, r, g, b, a, user } = req.body;
     if (!name) return res.sendStatus(400);
     if (!r) return res.sendStatus(400);
     if (!g) return res.sendStatus(400);
@@ -18,11 +20,11 @@ const projects = {
     const color = { r, g, b, a };
 
     // On vérifie que l'adresse mail n'existe pas déjà dans la bdd
-    ProjectModel.find({ name })
+    ProjectModel.find({ $and: [{ name }, { user }] })
       .then((result) => {
         if (result.length !== 0) return res.sendStatus(409);
         else {
-          ProjectModel.create({ name, color })
+          ProjectModel.create({ name, color, user })
             .then(() => {
               res.sendStatus(201);
             })
