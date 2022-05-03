@@ -13,9 +13,9 @@ const projects = {
   createProject(req, res) {
     const { name, r, g, b, a, user } = req.body;
     if (!name) return res.sendStatus(400);
-    if (!r) return res.sendStatus(400);
-    if (!g) return res.sendStatus(400);
-    if (!b) return res.sendStatus(400);
+    // if (!r) return res.sendStatus(400);
+    // if (!g) return res.sendStatus(400);
+    // if (!b) return res.sendStatus(400);
 
     const color = { r, g, b, a };
 
