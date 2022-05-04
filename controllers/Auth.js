@@ -8,11 +8,11 @@ async function login(req, res) {
 
   if (!email || !password) return res.sendStatus(400);
 
-  const user = await UserModel.findOne({ email });
-
+  const lowEmail = email.toLowerCase().trim();
+  const user = await UserModel.findOne({ email: lowEmail });
   if (user === null) {
     res.status(400);
-    return res.send("Vous n'existez pas");
+    return res.send("No User Found");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -22,7 +22,7 @@ async function login(req, res) {
   if (isMatch) res.send({ jwt: token });
   else {
     res.status(400);
-    res.send("Mot de passe incorrect");
+    res.send("Incorrect Login");
   }
 }
 
@@ -36,7 +36,9 @@ async function signin(req, res) {
   ) {
     res.status(400).send("Incorrect input");
   } else {
-    const isExistingUser = await UserModel.findOne({ email: req.body.email });
+    const lowEmail = req.body.email.toLowerCase().trim();
+
+    const isExistingUser = await UserModel.findOne({ email: lowEmail });
 
     if (isExistingUser === null) {
       try {
@@ -44,7 +46,7 @@ async function signin(req, res) {
         const newUser = {
           first_name: req.body.first_name,
           last_name: req.body.last_name,
-          email: req.body.email,
+          email: lowEmail,
           password: hashedPassword,
           position: "",
           adress: "",

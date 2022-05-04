@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
   adress: { String, default: "" },
   position: { String, default: "" },
   isAdmin: { Boolean, default: false },
+  profilePicture: {
+    type: String,
+    default: "",
+  },
 });
 
 const UserModel = mongoose.model("User", UserSchema);
