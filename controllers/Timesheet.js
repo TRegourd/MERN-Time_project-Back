@@ -20,6 +20,21 @@ const displayAllTimesheet = (req, res) => {
     });
 };
 
+const displayFilteredTimesheet = (req, res) => {
+  Time.find({
+    user: req.user,
+    date: { $gt: req.body.startDate, $lt: req.body.endDate },
+  })
+    .populate(["user", "project"])
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+};
+
 const postNewTimesheet = (req, res) => {
   const { desc, date, duration, project, user } = req.body;
 
@@ -114,6 +129,7 @@ const Timesheets = {
   deleteTimesheetById,
   getTotalProjectTime,
   getProjectListCurrentUser,
+  displayFilteredTimesheet,
 };
 
 module.exports = Timesheets;

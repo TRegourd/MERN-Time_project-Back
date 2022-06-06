@@ -8,6 +8,10 @@ router.get("/", Timesheets.displayTimesheetPage);
 
 /* GET timesheet list */
 router.get("/all", checkAuth, Timesheets.displayAllTimesheet);
+
+/* POST filtered timesheet list */
+router.post("/filter", checkAuth, Timesheets.displayFilteredTimesheet);
+
 /* GET project list for current User */
 router.get("/project/graph", checkAuth, Timesheets.getProjectListCurrentUser);
 /* GET timesheet list by project ID */
