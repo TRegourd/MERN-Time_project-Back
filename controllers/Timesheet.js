@@ -59,20 +59,6 @@ const displayTimesheetByProjectId = (req, res) => {
   findTimesheetByProjectID(req, res);
 };
 
-const getTotalProjectTime = (req, res) => {
-  Time.find({ user: req.user, project: req.params.id })
-    .then((result) => {
-      let totalTime = 0;
-      result.map((item) => (totalTime += item.duration));
-
-      res.send({ result, totalTime });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(404);
-    });
-};
-
 function sortProject(projects, currentTime, arr) {
   const projectName = currentTime.project.name;
   let projectExists = projectName in projects;
@@ -95,16 +81,33 @@ function treatData(times) {
   return arrayYFy(times.reduce(sortProject, {}));
 }
 
-const getProjectListCurrentUser = (req, res) => {
-  Time.find({ user: req.user })
-    .populate("project")
-    .then((result) => {
-      res.send(treatData(result));
+const getFilteredTotalTime = (req, res) => {
+  if (req.body.startDate || req.body.endDate) {
+    Time.find({
+      user: req.user,
+      date: { $gt: req.body.startDate, $lt: req.body.endDate },
     })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(404);
-    });
+      .populate("project")
+      .then((result) => {
+        res.send(treatData(result));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(404);
+      });
+  } else {
+    Time.find({
+      user: req.user,
+    })
+      .populate("project")
+      .then((result) => {
+        res.send(treatData(result));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(404);
+      });
+  }
 };
 
 const displayTimesheetByUserId = (req, res) => {
@@ -127,8 +130,7 @@ const Timesheets = {
   displayTimesheetByProjectId,
   displayTimesheetByUserId,
   deleteTimesheetById,
-  getTotalProjectTime,
-  getProjectListCurrentUser,
+  getFilteredTotalTime,
   displayFilteredTimesheet,
 };
 
