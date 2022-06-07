@@ -74,8 +74,8 @@ const users = {
   },
 
   async modifyCurrentUser(req, res) {
-    const updatedUser = req.body;
-    if (updatedUser.password && updatedUser.password != "") {
+    if (req.body.password && req.body.password !== "") {
+      const updatedUser = req.body;
       const hashedPassword = await bcrypt.hash(
         updatedUser.password,
         saltRounds
@@ -89,7 +89,14 @@ const users = {
           res.sendStatus(500);
         });
     } else {
-      UserModel.findByIdAndUpdate(req.user._id, updatedUser)
+      const { first_name, last_name, adress, position, email } = req.body;
+      UserModel.findByIdAndUpdate(req.user._id, {
+        first_name,
+        last_name,
+        adress,
+        position,
+        email,
+      })
         .then(() => {
           res.send(200);
         })
