@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const { v4: uuidv4 } = require("uuid");
 const sendResetEmail = require("../libs/sendResetEmail");
+const sendSignInEmail = require("../libs/sendSignInEmail");
 
 async function login(req, res) {
   const { email, password } = req.body;
@@ -54,6 +55,7 @@ async function signin(req, res) {
           adress: "",
         };
         await UserModel.create(newUser);
+        sendSignInEmail(newUser);
         res.status(204).send("User created");
       } catch (err) {
         res.status(400).send(err);
