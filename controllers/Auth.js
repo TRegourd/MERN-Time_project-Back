@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const { v4: uuidv4 } = require("uuid");
 const sendResetEmail = require("../libs/sendResetEmail");
+const sendSignInEmail = require("../libs/sendSignInEmail");
+const dayjs = require("dayjs");
 
 async function login(req, res) {
   const { email, password } = req.body;
@@ -54,6 +56,7 @@ async function signin(req, res) {
           adress: "",
         };
         await UserModel.create(newUser);
+        sendSignInEmail(newUser);
         res.status(204).send("User created");
       } catch (err) {
         res.status(400).send(err);
@@ -91,7 +94,26 @@ async function forgot(req, res) {
   }
 }
 
-async function reset(req, res) {}
+async function reset(req, res) {
+  const user = await UserModel.findOne({ "uuid.token": req.params.id });
+  if (user) {
+    const timeStampDate = dayjs(user.uuid.timeStamp);
+    const nowDate = dayjs();
+    const diffDates = nowDate.diff(timeStampDate, "minute");
+    if (req.body.email === user.email && diffDates < 15) {
+      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+      await UserModel.findOneAndUpdate(
+        { "uuid.token": req.params.id },
+        { password: hashedPassword, uuid: {} }
+      );
+      res.sendStatus(200);
+    } else {
+      res.status(403).json();
+    }
+  } else {
+    res.status(404).json();
+  }
+}
 
 const Auth = { login, signin, forgot, reset };
 
