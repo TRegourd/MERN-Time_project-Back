@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  uuid: { token: String, timeStamp: Date },
 });
 
 const UserModel = mongoose.model("User", UserSchema);

@@ -2,6 +2,8 @@ const UserModel = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
+const { v4: uuidv4 } = require("uuid");
+const sendResetEmail = require("../libs/sendResetEmail");
 
 async function login(req, res) {
   const { email, password } = req.body;
@@ -62,6 +64,35 @@ async function signin(req, res) {
   }
 }
 
-const Auth = { login, signin };
+async function forgot(req, res) {
+  if (!req.body.email) {
+    res.status(400).send("Incorrect input");
+  } else {
+    const lowEmail = req.body.email.toLowerCase().trim();
+
+    const isExistingUser = await UserModel.findOne({ email: lowEmail });
+
+    if (isExistingUser !== null) {
+      try {
+        const uuid = {
+          token: uuidv4(),
+          timeStamp: Date.now(),
+        };
+        await UserModel.findOneAndUpdate({ email: lowEmail }, { uuid: uuid });
+        sendResetEmail(isExistingUser.email, uuid);
+        res.sendStatus(200);
+      } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+      }
+    } else {
+      res.status(500).send("No user with this email");
+    }
+  }
+}
+
+async function reset(req, res) {}
+
+const Auth = { login, signin, forgot, reset };
 
 module.exports = Auth;
