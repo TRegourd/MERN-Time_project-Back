@@ -1,4 +1,6 @@
 const UserModel = require("../models/Users");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const users = {
   // Utilisateur Courtant
@@ -71,17 +73,30 @@ const users = {
       });
   },
 
-  modifyCurrentUser(req, res) {
-    const { first_name, last_name, adress, position } = req.user;
+  async modifyCurrentUser(req, res) {
     const updatedUser = req.body;
-
-    UserModel.findByIdAndUpdate(req.user._id, updatedUser)
-      .then(() => {
-        res.send(200);
-      })
-      .catch(() => {
-        res.sendStatus(500);
-      });
+    if (updatedUser.password && updatedUser.password != "") {
+      const hashedPassword = await bcrypt.hash(
+        updatedUser.password,
+        saltRounds
+      );
+      updatedUser.password = hashedPassword;
+      UserModel.findByIdAndUpdate(req.user._id, updatedUser)
+        .then(() => {
+          res.send(200);
+        })
+        .catch(() => {
+          res.sendStatus(500);
+        });
+    } else {
+      UserModel.findByIdAndUpdate(req.user._id, updatedUser)
+        .then(() => {
+          res.send(200);
+        })
+        .catch(() => {
+          res.sendStatus(500);
+        });
+    }
   },
 
   deleteUserById(req, res) {
