@@ -18,8 +18,8 @@ async function sendSignInEmail(user) {
         from: '"Fred Foo 👻" <foo@example.com>',
         to: user.email,
         subject: "Hello ✔",
-        text: `Thanks for signing in to All-in-QR`,
-        html: `    <p>Thanks for signing in to All-in-QR</p>
+        text: `Thanks for signing in to The Time Machine`,
+        html: `    <p>Thanks for signing in to The Time Machine</p>
       <p>
         Get Started organizing your time
         <button>
