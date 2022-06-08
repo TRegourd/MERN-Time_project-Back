@@ -35,6 +35,19 @@ const displayFilteredTimesheet = (req, res) => {
     });
 };
 
+const updateTimesheet = (req, res) => {
+  const { _id, desc, date, duration, project } = req.body;
+  console.log(_id);
+  Time.findByIdAndUpdate(_id, { desc, date, duration, project })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+};
+
 const postNewTimesheet = (req, res) => {
   const { desc, date, duration, project, user } = req.body;
 
@@ -132,6 +145,7 @@ const Timesheets = {
   deleteTimesheetById,
   getFilteredTotalTime,
   displayFilteredTimesheet,
+  updateTimesheet,
 };
 
 module.exports = Timesheets;
