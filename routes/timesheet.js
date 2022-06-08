@@ -27,4 +27,7 @@ router.post("/newtimesheet", checkAuth, Timesheets.postNewTimesheet);
 /* DELETE new timesheet */
 router.delete("/delete/:id", Timesheets.deleteTimesheetById);
 
+/* UPDATE Timesheet */
+router.put("/update/:id", checkAuth, Timesheets.updateTimesheet);
+
 module.exports = router;
