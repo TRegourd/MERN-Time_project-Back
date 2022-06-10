@@ -7,6 +7,10 @@ const ProjetSchema = new mongoose.Schema({
     ref: "User",
   },
   customer: String,
+  team: {
+    type: mongoose.Types.ObjectId,
+    ref: "Team",
+  },
 });
 
 const ProjetModel = mongoose.model("Project", ProjetSchema);
