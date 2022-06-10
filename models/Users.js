@@ -7,12 +7,14 @@ const UserSchema = new mongoose.Schema({
   password: String,
   adress: { String, default: "" },
   position: { String, default: "" },
-  isAdmin: { Boolean, default: false },
-  profilePicture: {
-    type: String,
-    default: "",
-  },
+  isAdmin: Boolean,
   uuid: { token: String, timeStamp: Date },
+  team: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Team",
+    },
+  ],
 });
 
 const UserModel = mongoose.model("User", UserSchema);

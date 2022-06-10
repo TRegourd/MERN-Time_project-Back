@@ -13,6 +13,7 @@ var projectsRouter = require("./routes/projects");
 var timesRouter = require("./routes/timesheet");
 var authRouter = require("./routes/auth");
 var contactRouter = require("./routes/contact");
+var teamsRouter = require("./routes/teams");
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use("/projects", projectsRouter);
 app.use("/timesheet", timesRouter);
 app.use("/auth", authRouter);
 app.use("/contact", contactRouter);
+app.use("/teams", teamsRouter);
 
 app.use(express.static(path.join(__dirname, "public")));
 

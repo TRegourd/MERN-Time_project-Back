@@ -54,6 +54,7 @@ async function signin(req, res) {
           password: hashedPassword,
           position: "",
           adress: "",
+          isAdmin: req.body.isAdmin,
         };
         await UserModel.create(newUser);
         sendSignInEmail(newUser);
