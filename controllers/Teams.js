@@ -2,7 +2,6 @@ const TeamModel = require("../models/Teams");
 const getRandomTeamCode = require("../libs/getRandomTeamCode");
 
 function createTeam(req, res) {
-  console.log(req.user.isAdmin);
   if (req.user.isAdmin) {
     let teamCode = getRandomTeamCode();
     let body = {
@@ -20,6 +19,24 @@ function createTeam(req, res) {
   }
 }
 
-const Teams = { createTeam };
+function getTeams(req, res) {
+  TeamModel.find({ user: req.user })
+    .populate(["user"])
+    .then((teamList) => {
+      res.send(teamList);
+    });
+}
+
+function deleteTeam(req, res) {
+  TeamModel.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.send(200);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+}
+
+const Teams = { createTeam, getTeams, deleteTeam };
 
 module.exports = Teams;
