@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
   email: String,
   password: String,
   adress: { String, default: "" },
+  company: String,
   position: { String, default: "" },
   isAdmin: Boolean,
   uuid: { token: String, timeStamp: Date },
