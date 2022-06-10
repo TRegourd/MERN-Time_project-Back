@@ -37,6 +37,16 @@ function deleteTeam(req, res) {
     });
 }
 
-const Teams = { createTeam, getTeams, deleteTeam };
+function modifyTeam(req, res) {
+  TeamModel.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+      res.send(200);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+}
+
+const Teams = { createTeam, getTeams, deleteTeam, modifyTeam };
 
 module.exports = Teams;
