@@ -1,5 +1,6 @@
 const TeamModel = require("../models/Teams");
 const getRandomTeamCode = require("../libs/getRandomTeamCode");
+const UserModel = require("../models/Users");
 
 function createTeam(req, res) {
   if (req.user.isAdmin) {
@@ -47,6 +48,17 @@ function modifyTeam(req, res) {
     });
 }
 
-const Teams = { createTeam, getTeams, deleteTeam, modifyTeam };
+function addUserToTeam(req, res) {
+  TeamModel.find({ code: req.body.code }).then((result) => {
+    let oldTeamList = req.user.team;
+    let newTeamList = oldTeamList.concat(result[0]._id);
+    UserModel.updateOne({ _id: req.user._id }, { team: newTeamList }).catch(
+      (err) => console.log(err)
+    );
+  });
+  res.send(200);
+}
+
+const Teams = { createTeam, getTeams, deleteTeam, modifyTeam, addUserToTeam };
 
 module.exports = Teams;

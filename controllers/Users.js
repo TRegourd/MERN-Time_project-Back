@@ -5,9 +5,11 @@ const saltRounds = 10;
 const users = {
   // Utilisateur Courtant
   getUsers(req, res) {
-    UserModel.findById(req.user._id).then((usersList) => {
-      res.send(usersList);
-    });
+    UserModel.findById(req.user._id)
+      .populate(["team"])
+      .then((usersList) => {
+        res.send(usersList);
+      });
   },
 
   createUser(req, res) {
