@@ -59,6 +59,25 @@ function addUserToTeam(req, res) {
   res.send(200);
 }
 
-const Teams = { createTeam, getTeams, deleteTeam, modifyTeam, addUserToTeam };
+function leaveTeam(req, res) {
+  let oldTeamList = req.user.team;
+  let newTeamList = oldTeamList.filter((item) => {
+    return item._id != req.params.id;
+  });
+  UserModel.updateOne({ _id: req.user._id }, { team: newTeamList }).catch(
+    (err) => console.log(err)
+  );
+
+  res.send(200);
+}
+
+const Teams = {
+  createTeam,
+  getTeams,
+  deleteTeam,
+  modifyTeam,
+  addUserToTeam,
+  leaveTeam,
+};
 
 module.exports = Teams;
