@@ -1,6 +1,8 @@
 const TeamModel = require("../models/Teams");
 const getRandomTeamCode = require("../libs/getRandomTeamCode");
 const UserModel = require("../models/Users");
+const ProjectModel = require("../models/Projects");
+const { deleteProjectByTeam } = require("../libs/deleteProjectByTeam");
 
 function createTeam(req, res) {
   if (req.user.isAdmin) {
@@ -29,12 +31,20 @@ function getTeams(req, res) {
 }
 
 function deleteTeam(req, res) {
-  TeamModel.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.send(200);
+  ProjectModel.find({ team: req.params.id })
+    .then((result) => {
+      result.map((project) => {
+        deleteProjectByTeam(project._id);
+      });
     })
-    .catch(() => {
-      res.sendStatus(500);
+    .then(() => {
+      TeamModel.findByIdAndDelete(req.params.id)
+        .then(() => {
+          res.sendStatus(200);
+        })
+        .catch(() => {
+          res.sendStatus(500);
+        });
     });
 }
 
