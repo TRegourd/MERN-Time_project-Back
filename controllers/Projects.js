@@ -3,8 +3,8 @@ const ProjectModel = require("../models/Projects");
 const projects = {
   // Liste de tous les utilisateurs
   getProjects(req, res) {
-    ProjectModel.find({ user: req.user })
-      .populate(["user"])
+    ProjectModel.find({ $or: [{ user: req.user }, { team: req.user.team }] })
+      .populate(["user", "team"])
       .then((projectList) => {
         res.send(projectList);
       });
