@@ -56,7 +56,9 @@ async function signin(req, res) {
           adress: "",
           company: req.body.company,
           isAdmin: req.body.isAdmin,
+          team: req.body.team,
         };
+
         await UserModel.create(newUser);
         sendSignInEmail(newUser);
         res.status(204).send("User created");

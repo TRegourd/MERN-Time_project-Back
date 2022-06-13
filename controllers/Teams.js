@@ -3,6 +3,7 @@ const getRandomTeamCode = require("../libs/getRandomTeamCode");
 const UserModel = require("../models/Users");
 const ProjectModel = require("../models/Projects");
 const { deleteProjectByTeam } = require("../libs/deleteProjectByTeam");
+const sendInvitationEmail = require("../libs/sendInvitationEmail");
 
 function createTeam(req, res) {
   if (req.user.isAdmin) {
@@ -51,7 +52,7 @@ function deleteTeam(req, res) {
 function modifyTeam(req, res) {
   TeamModel.findByIdAndUpdate(req.params.id, req.body)
     .then(() => {
-      res.send(200);
+      res.sendStatus(200);
     })
     .catch(() => {
       res.sendStatus(500);
@@ -62,11 +63,12 @@ function addUserToTeam(req, res) {
   TeamModel.find({ code: req.body.code }).then((result) => {
     let oldTeamList = req.user.team;
     let newTeamList = oldTeamList.concat(result[0]._id);
-    UserModel.updateOne({ _id: req.user._id }, { team: newTeamList }).catch(
-      (err) => console.log(err)
-    );
+    UserModel.updateOne({ _id: req.user._id }, { team: newTeamList })
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => console.log(err));
   });
-  res.send(200);
 }
 
 function leaveTeam(req, res) {
@@ -74,11 +76,44 @@ function leaveTeam(req, res) {
   let newTeamList = oldTeamList.filter((item) => {
     return item._id != req.params.id;
   });
-  UserModel.updateOne({ _id: req.user._id }, { team: newTeamList }).catch(
-    (err) => console.log(err)
-  );
+  UserModel.updateOne({ _id: req.user._id }, { team: newTeamList })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+}
 
-  res.send(200);
+function getTeamMembers(req, res) {
+  UserModel.find({ team: req.params.id })
+    .then((result) => {
+      res.send(result).status(200);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+}
+
+function removeUser(req, res) {
+  let oldTeamList = req.body.team;
+  let newTeamList = oldTeamList.filter((item) => {
+    return item != req.params.id;
+  });
+  UserModel.updateOne({ _id: req.body.id }, { team: newTeamList })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+}
+
+function inviteUser(req, res) {
+  TeamModel.findById(req.params.id).then((team) => {
+    sendInvitationEmail(req.body.emails, team, req.user)
+      .then(res.send("email sent"))
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 }
 
 const Teams = {
@@ -88,6 +123,9 @@ const Teams = {
   modifyTeam,
   addUserToTeam,
   leaveTeam,
+  getTeamMembers,
+  removeUser,
+  inviteUser,
 };
 
 module.exports = Teams;
