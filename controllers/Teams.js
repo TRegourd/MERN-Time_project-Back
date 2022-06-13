@@ -3,6 +3,7 @@ const getRandomTeamCode = require("../libs/getRandomTeamCode");
 const UserModel = require("../models/Users");
 const ProjectModel = require("../models/Projects");
 const { deleteProjectByTeam } = require("../libs/deleteProjectByTeam");
+const sendInvitationEmail = require("../libs/sendInvitationEmail");
 
 function createTeam(req, res) {
   if (req.user.isAdmin) {
@@ -105,6 +106,16 @@ function removeUser(req, res) {
     .catch((err) => console.log(err));
 }
 
+function inviteUser(req, res) {
+  TeamModel.findById(req.params.id).then((team) => {
+    sendInvitationEmail(req.body.emails, team, req.user)
+      .then(res.send("email sent"))
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+}
+
 const Teams = {
   createTeam,
   getTeams,
@@ -114,6 +125,7 @@ const Teams = {
   leaveTeam,
   getTeamMembers,
   removeUser,
+  inviteUser,
 };
 
 module.exports = Teams;
