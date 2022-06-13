@@ -15,8 +15,7 @@ async function sendInvitationEmail(email, team, manager) {
       });
 
       let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <foo@example.com>',
-        to: '"Fred Foo 👻" <foo@example.com>',
+        from: `"${manager.first_name} ${manager.last_name}" <${manager.email}>`,
         cc: email,
         subject: "Register to The Time Machine !",
         text: `Please click on this link: http://localhost:3000/invite/${team.id} to register.`,
