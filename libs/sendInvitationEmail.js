@@ -23,7 +23,7 @@ async function sendInvitationEmail(email, team, manager) {
       <p>You have been invited to join the team "${team.name}" by ${manager.first_name} ${manager.last_name}</p>
       <p>
         Please follow
-        <a href="http://localhost:3000/register/${team.id}"
+        <a href="http://localhost:3000/invitation/${team.id}"
           >this link</a
         >
         to register
