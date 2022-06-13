@@ -62,29 +62,38 @@ const projects = {
   },
 
   deleteProjectById(req, res) {
-    Time.find({ project: req.params.id }).then((result) => {
-      if (result && result.length != 0) {
-        const timesToDelete = result.map((time) => time._id);
-        console.log(timesToDelete);
-        Time.deleteMany({ _id: timesToDelete }).then(() => {
-          ProjectModel.findByIdAndDelete(req.params.id)
-            .then(() => {
-              res.sendStatus(200);
-            })
-            .catch(() => {
-              res.sendStatus(500);
-            });
-        });
-      } else {
-        ProjectModel.findByIdAndDelete(req.params.id)
-          .then(() => {
-            res.sendStatus(200);
-          })
-          .catch(() => {
-            res.sendStatus(500);
+    ProjectModel.findById(req.params.id)
+      .then((projectToDelete) => {
+        if (projectToDelete.user.equals(req.user._id)) {
+          Time.find({ project: req.params.id }).then((result) => {
+            if (result && result.length != 0) {
+              const timesToDelete = result.map((time) => time._id);
+              Time.deleteMany({ _id: timesToDelete }).then(() => {
+                ProjectModel.findByIdAndDelete(req.params.id)
+                  .then(() => {
+                    res.sendStatus(200);
+                  })
+                  .catch(() => {
+                    res.sendStatus(500);
+                  });
+              });
+            } else {
+              ProjectModel.findByIdAndDelete(req.params.id)
+                .then(() => {
+                  res.sendStatus(200);
+                })
+                .catch(() => {
+                  res.sendStatus(500);
+                });
+            }
           });
-      }
-    });
+        } else {
+          res.sendStatus(403);
+        }
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
   },
 };
 
