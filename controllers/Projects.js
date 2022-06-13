@@ -1,4 +1,6 @@
+const timespan = require("jsonwebtoken/lib/timespan");
 const ProjectModel = require("../models/Projects");
+const Time = require("../models/Times");
 
 const projects = {
   // Liste de tous les utilisateurs
@@ -60,9 +62,34 @@ const projects = {
   },
 
   deleteProjectById(req, res) {
-    ProjectModel.findByIdAndDelete(req.params.id)
-      .then(() => {
-        res.send(200);
+    ProjectModel.findById(req.params.id)
+      .then((projectToDelete) => {
+        if (projectToDelete.user.equals(req.user._id)) {
+          Time.find({ project: req.params.id }).then((result) => {
+            if (result && result.length != 0) {
+              const timesToDelete = result.map((time) => time._id);
+              Time.deleteMany({ _id: timesToDelete }).then(() => {
+                ProjectModel.findByIdAndDelete(req.params.id)
+                  .then(() => {
+                    res.sendStatus(200);
+                  })
+                  .catch(() => {
+                    res.sendStatus(500);
+                  });
+              });
+            } else {
+              ProjectModel.findByIdAndDelete(req.params.id)
+                .then(() => {
+                  res.sendStatus(200);
+                })
+                .catch(() => {
+                  res.sendStatus(500);
+                });
+            }
+          });
+        } else {
+          res.sendStatus(403);
+        }
       })
       .catch(() => {
         res.sendStatus(500);
