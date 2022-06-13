@@ -11,5 +11,7 @@ router.put("/update/:id", checkAuth, Teams.modifyTeam);
 router.delete("/delete/:id", checkAuth, Teams.deleteTeam);
 router.put("/addUser/", checkAuth, Teams.addUserToTeam);
 router.get("/leave/:id", checkAuth, Teams.leaveTeam);
+router.get("/members/:id", checkAuth, Teams.getTeamMembers);
+router.put("/removeUser/:id", checkAuth, Teams.removeUser);
 
 module.exports = router;
