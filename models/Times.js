@@ -11,12 +11,6 @@ const TimeSchema = new mongoose.Schema(
     duration: {
       type: Number,
     },
-    start: {
-      type: Date,
-    },
-    end: {
-      type: Date,
-    },
     project: {
       type: mongoose.Types.ObjectId,
       ref: "Project",
